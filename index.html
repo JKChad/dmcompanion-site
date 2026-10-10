@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="DM Companion turns your session notes into a linked campaign wiki for game masters, with answers grounded in your own world and a player view that keeps your secrets.">
+<meta name="description" content="DM Companion turns your session notes into a campaign wiki of plain markdown files you own, and tracks exactly which facts your players have learned.">
 <meta property="og:title" content="DM Companion">
-<meta property="og:description" content="Paste your session notes. Get a campaign wiki that keeps up.">
+<meta property="og:description" content="Your canon as files you own. Your players see only what they've learned.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>DM Companion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,7 +116,7 @@ section.block{padding-block:88px;border-top:1px solid var(--line)}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 
 /* two views */
-.views{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.views{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
 @media (max-width:860px){.views{grid-template-columns:1fr}}
 .view{border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .view.dm{background:var(--surface);border:1px solid var(--line)}
@@ -161,6 +161,23 @@ section.block{padding-block:88px;border-top:1px solid var(--line)}
 @media (max-width:480px){.plan{grid-template-columns:1fr;gap:2px}}
 
 
+/* facts */
+.facts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.fact{border:1px solid var(--line);background:var(--raise);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.fact p{font-size:15px;line-height:1.5}
+.fact-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.vis{font:600 12px/1 var(--body);padding:6px 10px;border-radius:999px;border:1px solid var(--line);display:inline-flex;gap:6px;align-items:center;background:transparent;color:var(--muted)}
+button.vis{cursor:pointer}
+.vis[data-v="party"]{color:var(--add-fg);border-color:#2F5A3B;background:var(--add-bg)}
+.vis[data-v="dm"]{color:var(--secret-fg);border-color:var(--secret-line);background:var(--secret-bg)}
+.new{color:var(--amber);font-weight:600}
+.count{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13.5px;color:var(--muted);flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.journal{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.journal li{display:flex;flex-direction:column;gap:2px;padding-bottom:12px;border-bottom:1px solid var(--parch-line)}
+.journal li:last-child{border-bottom:0;padding-bottom:0}
+.journal small{font-size:12.5px;color:var(--ink-muted)}
+.dmfacts .fact{background:var(--bg)}
+
 /* about */
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
 .about-body{display:flex;flex-direction:column;gap:14px;color:var(--muted);font-size:17px;max-width:36em}
@@ -203,7 +220,7 @@ footer a{color:var(--muted)}
     </a>
     <div class="navlinks">
       <a href="#how">How it works</a>
-      <a href="#views">Player view</a>
+      <a href="#views">What players see</a>
       <a href="#own">Your files</a>
       <a href="#about">About</a>
       <a class="btn sm primary" href="#join">Get early access</a>
@@ -213,8 +230,8 @@ footer a{color:var(--muted)}
   <header class="hero">
     <div>
       <p class="label">For game masters running long campaigns</p>
-      <h1 style="margin-top:16px">Your campaign, <em>remembered.</em></h1>
-      <p class="lede">Paste your messy session notes. DM Companion files them into a wiki of NPCs, places, and loose threads, then answers questions about your world using only what you've written.</p>
+      <h1 style="margin-top:16px">Your canon, as files you own. Your secrets, <em>kept.</em></h1>
+      <p class="lede">Paste your session notes. DM Companion turns them into a campaign wiki of plain markdown files, and tracks every fact your players have learned and the session they learned it in.</p>
       <div class="cta">
         <a class="btn primary" href="#join">Get early access</a>
         <a class="btn" href="#how">See how it works</a>
@@ -222,22 +239,28 @@ footer a{color:var(--muted)}
       <p class="fine">In development. Early access opens to a small group of DMs first.</p>
     </div>
 
-    <div class="frame" role="img" aria-label="Example of the Ask the campaign panel answering a question about NPCs">
-      <div class="frame-top"><b>Ask the campaign</b><span>Grounded in 124 pages</span></div>
+    <div class="frame" aria-label="Example NPC page broken into facts, each with its own visibility">
+      <div class="frame-top"><b>Mordecai Vane</b><span>npcs/mordecai-vane.md</span></div>
       <div class="frame-body">
-        <div class="q">Who in the River District has a reason to hate the party?</div>
-        <div class="a">
-          <p>Two people, and one faction:</p>
-          <p><span class="chip">Captain Roske</span> was humiliated on the wharf in Session 11. He's had watchmen posted at the lock gates since.</p>
-          <p><span class="chip">Old Brannoc</span> lost his cargo when the party sank the barge.</p>
-          <p><span class="chip">The Gilded Hand</span> suspects someone is talking. They don't yet know it's <span class="chip">Mordecai Vane</span>.</p>
-          <div class="secret">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>
-            <span>Uses a DM-only secret from Mordecai Vane. Hidden in player view.</span>
-          </div>
-        </div>
-        <p class="src">Sources: <a href="#how">Session 11</a><a href="#how">Captain Roske</a><a href="#how">Old Brannoc</a><a href="#views">Mordecai Vane</a></p>
-        <div class="ask"><span>Ask anything about your world…</span><i aria-hidden="true">→</i></div>
+        <ul class="facts" id="hero-facts">
+          <li class="fact">
+            <p>Runs the river ferry between the wharf and the <span class="wl">Lock Gates</span>.</p>
+            <div class="fact-meta"><button class="vis" type="button" data-v="party">Party knows</button><span>Learned in Session 4</span></div>
+          </li>
+          <li class="fact">
+            <p>Favor settled: fare cut to 20gp. The party now owes <i>him</i> one.</p>
+            <div class="fact-meta"><button class="vis" type="button" data-v="party">Party knows</button><span>Learned in Session 12 · <span class="new">new</span></span></div>
+          </li>
+          <li class="fact">
+            <p>Informs for <span class="wl">The Gilded Hand</span>.</p>
+            <div class="fact-meta"><button class="vis" type="button" data-v="dm">DM only</button><span>From your prep notes</span></div>
+          </li>
+          <li class="fact">
+            <p>Blackmailed by <span class="wl">Captain Roske</span> over a drowned passenger.</p>
+            <div class="fact-meta"><button class="vis" type="button" data-v="dm">DM only</button><span>From your prep notes</span></div>
+          </li>
+        </ul>
+        <div class="count"><span id="hero-count">Players see 2 of 4 facts</span><span>Tap a label to reveal or hide a fact</span></div>
       </div>
     </div>
   </header>
@@ -245,17 +268,17 @@ footer a{color:var(--muted)}
   <section class="block" id="how">
     <div class="head">
       <p class="label">After the session</p>
-      <h2>You write notes the way you always do. The wiki keeps up.</h2>
-      <p>Nothing changes in your wiki until you accept it. Every proposed edit shows what it changes and why.</p>
+      <h2>Write notes the way you always do. No recording needed.</h2>
+      <p>Paste typed notes after the session. Nothing changes in your wiki until you accept it, and every fact keeps a link to the note it came from.</p>
     </div>
     <div class="steps">
       <ol class="steplist">
         <li><h3>Paste your notes</h3><p>Shorthand, typos, half-sentences. Names get matched to pages you already have.</p></li>
-        <li class="on"><h3>Review the changes</h3><p>Updates to existing pages, new NPCs saved as drafts, and a question when something is ambiguous.</p></li>
+        <li class="on"><h3>Review the proposed facts</h3><p>New facts for existing pages, new NPCs saved as drafts, and a question when something is ambiguous. You choose what's canon and who can see it.</p></li>
         <li><h3>Prep the next session</h3><p>Loose threads, who's likely to show up, and what each of them wants, on one screen.</p></li>
       </ol>
       <div class="frame">
-        <div class="frame-top"><b>Review changes from Session 12</b><span style="font-variant-numeric:tabular-nums">3 of 7 reviewed</span></div>
+        <div class="frame-top"><b>Review Session 12</b><span style="font-variant-numeric:tabular-nums">3 of 7 reviewed</span></div>
         <div class="frame-body">
           <div class="notes" aria-label="Example session notes">- fog on wharf, party takes <mark>the ferryman</mark> across to lock gates
 - he wants 40gp more, says they owe him. Ryn talked him down to 20 + a favor
@@ -267,12 +290,9 @@ footer a{color:var(--muted)}
             <div class="actions"><button class="btn sm primary" type="button">Yes, link it</button><button class="btn sm" type="button">No, someone new</button></div>
           </div>
           <div class="card">
-            <div class="tagrow"><span class="tag up">Update</span><span style="font:600 16px var(--display);color:var(--link)">Mordecai Vane</span>npcs/ · canon</div>
-            <div class="diff" role="group" aria-label="Proposed edit">
-              <div class="ctx">## Relationship with the party</div>
-              <div class="del">− Owes the party a favor after Session 4.</div>
-              <div class="add">+ Favor settled in [[Session 12]]: fare cut to 20gp. The party now owes *him* one.</div>
-            </div>
+            <div class="tagrow"><span class="tag nw">New fact</span><span style="font:600 16px var(--display);color:var(--link)">Mordecai Vane</span>from your notes, line 2</div>
+            <p style="font-size:15px">Favor settled: fare cut to 20gp. The party now owes <i>him</i> one.</p>
+            <div class="fact-meta"><span>Who knows:</span><span class="vis" data-v="party">Party knows</span><span class="vis">DM only</span></div>
             <div class="actions"><button class="btn sm primary" type="button">Accept</button><button class="btn sm" type="button">Edit</button><button class="btn sm" type="button">Reject</button></div>
           </div>
         </div>
@@ -282,31 +302,31 @@ footer a{color:var(--muted)}
 
   <section class="block" id="views">
     <div class="head">
-      <p class="label">One page, two audiences</p>
-      <h2>Share the world with your players. Keep the secrets.</h2>
-      <p>Players get a read-only journal of what their party has discovered. Anything you mark DM-only never reaches it.</p>
+      <p class="label">What the party knows</p>
+      <h2>Your players see what they've learned. Nothing more.</h2>
+      <p>Every fact has its own visibility. Reveal one at the table and it shows up in the player journal, marked with the session where the party learned it. The rest stays yours.</p>
     </div>
     <div class="views">
       <article class="view dm" aria-label="DM view of an NPC page">
         <p class="label">What you see</p>
         <div class="who"><div class="av">MV</div><div><h3>Mordecai Vane</h3><small>Also known as The Ferryman</small></div></div>
-        <div class="badges"><span class="badge canon">Canon</span><span class="badge">Visible to party</span><span class="badge">#smuggler</span></div>
-        <p>Retired smuggler who runs the river ferry between the wharf and the <span class="wl">Lock Gates</span>. Always keeping score of who owes whom.</p>
-        <div class="secret">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>
-          <span><b>Secret · DM only.</b> Informs for The Gilded Hand. Being blackmailed by Captain Roske over a drowned passenger.</span>
-        </div>
-        <h5>Wants</h5>
-        <p>Out from under Roske's thumb before the Hand finds out.</p>
+        <div class="badges"><span class="badge canon">Canon</span><span class="badge">2 of 4 facts revealed</span></div>
+        <ul class="facts dmfacts">
+          <li class="fact"><p>Runs the river ferry between the wharf and the <span class="wl">Lock Gates</span>.</p><div class="fact-meta"><span class="vis" data-v="party">Party knows</span><span>Session 4</span></div></li>
+          <li class="fact"><p>Favor settled: fare cut to 20gp. The party now owes <i>him</i> one.</p><div class="fact-meta"><span class="vis" data-v="party">Party knows</span><span>Session 12</span></div></li>
+          <li class="fact"><p>Informs for <span class="wl">The Gilded Hand</span>.</p><div class="fact-meta"><span class="vis" data-v="dm">DM only</span></div></li>
+          <li class="fact"><p>Blackmailed by <span class="wl">Captain Roske</span> over a drowned passenger.</p><div class="fact-meta"><span class="vis" data-v="dm">DM only</span></div></li>
+        </ul>
       </article>
-      <article class="view pl" aria-label="Player view of the same NPC page">
+      <article class="view pl" aria-label="Player journal view of the same NPC">
         <p class="label">What your players see</p>
         <div class="who"><div class="av">MV</div><div><h3>Mordecai Vane</h3><small>"The Ferryman"</small></div></div>
         <div class="badges"><span class="badge">Person</span><span class="badge">Shared by your DM · read-only</span></div>
-        <p>Retired smuggler who runs the river ferry between the wharf and the <span class="wl">Lock Gates</span>. Gruff, practical, and always keeping score of who owes whom.</p>
-        <h5>With us</h5>
-        <p>Cut our fare to 20gp in <span class="wl">Session 12</span>. We owe him a favor now.</p>
-        <p class="viewnote">This journal shows only what your party has discovered.</p>
+        <ul class="journal">
+          <li><span>Runs the river ferry between the wharf and the <span class="wl">Lock Gates</span>.</span><small>Learned in Session 4</small></li>
+          <li><span>Cut our fare to 20gp. We owe him a favor now.</span><small>Learned in Session 12</small></li>
+        </ul>
+        <p class="viewnote">This journal shows only what your party has learned.</p>
       </article>
     </div>
   </section>
@@ -321,8 +341,8 @@ footer a{color:var(--muted)}
       <div class="feat"><h3>Answers with sources</h3><p>Ask about your world and every answer names the pages and sessions it came from. If it isn't in your notes, it says so.</p></div>
       <div class="feat"><h3>Drafts stay drafts</h3><p>Generated NPCs, encounters, and descriptions are marked as drafts until you make them canon.</p></div>
       <div class="feat"><h3>Next-session prep</h3><p>Open threads, NPCs likely to appear, and who owes whom, pulled together before game night.</p></div>
-      <div class="feat"><h3>Portraits and encounters</h3><p>Generate a portrait or build an encounter from an NPC's page, using the details you've already written.</p></div>
-      <div class="feat"><h3>Secrets, enforced</h3><p>DM-only notes are kept out of the player journal and out of any answer a player can see.</p></div>
+      <div class="feat"><h3>No recording needed</h3><p>Works from the notes you already take. Good for in-person tables and groups that don't want their sessions recorded.</p></div>
+      <div class="feat"><h3>Secrets, one fact at a time</h3><p>Mark any single fact DM-only. It stays out of the player journal and out of any answer a player can see.</p></div>
     </div>
   </section>
 
@@ -331,12 +351,12 @@ footer a{color:var(--muted)}
       <div>
         <div class="head" style="margin-bottom:0">
           <p class="label">Your files</p>
-          <h2>Your world is plain markdown. Take it anywhere.</h2>
-          <p>Every page is a markdown file you can export to Obsidian or any editor. Leaving DM Companion never means losing your campaign.</p>
+          <h2>Your canon is plain markdown. Take it anywhere.</h2>
+          <p>Every page is a markdown file that opens in Obsidian or any editor, with its facts and sources included. Export whenever you like. Leaving DM Companion never means losing your campaign.</p>
         </div>
         <div class="plans">
           <div class="plan"><b>Hosted</b><span>Subscription with AI credits included. Pricing will be announced with early access.</span></div>
-          <div class="plan"><b>Self-hosted</b><span>An open-source version you run yourself.</span></div>
+          <div class="plan"><b>Self-hosted</b><span>Open source. Run it on your own machine and bring your own AI API key.</span></div>
         </div>
       </div>
       <div class="tree" aria-label="Example campaign folder"><b>the-drowned-crown/</b>
@@ -385,6 +405,19 @@ footer a{color:var(--muted)}
           <select id="wl-sessions" name="campaign_length">
             <option>Just starting</option><option>Under 10 sessions</option><option>10–30 sessions</option><option>30+ sessions</option>
           </select></div>
+        <div class="row"><label for="wl-tool">Where do your campaign notes live now?</label>
+          <select id="wl-tool" name="current_tool">
+            <option value="">Choose one</option><option>Obsidian</option><option>Notion or Google Docs</option><option>World Anvil, Kanka, or LegendKeeper</option><option>An AI session tool</option><option>Paper notebook</option><option>Nowhere consistent</option>
+          </select></div>
+        <div class="row"><label for="wl-record">Does your table record sessions?</label>
+          <select id="wl-record" name="records_sessions">
+            <option value="">Choose one</option><option>Yes, most sessions</option><option>Sometimes</option><option>No, and we wouldn't want to</option><option>No, but we'd be open to it</option>
+          </select></div>
+        <div class="row"><label for="wl-pay">Would you pay $8 a month for DM Companion?</label>
+          <select id="wl-pay" name="would_pay_8" required>
+            <option value="">Choose one</option><option>Yes</option><option>Maybe</option><option>No</option>
+          </select></div>
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
         <label class="check" for="wl-age"><input id="wl-age" name="adult" type="checkbox" required> I'm 18 or older.</label>
         <button class="btn primary" type="submit" id="wl-submit">Request early access</button>
         <p class="msg" id="wl-msg" role="status" hidden></p>
@@ -399,12 +432,30 @@ footer a{color:var(--muted)}
 </div>
 
 <script>
-// Paste your Formspree (or similar) endpoint here, e.g. "https://formspree.io/f/abcdwxyz".
-// Leave it empty and the form tells people to email you instead.
-const FORM_ENDPOINT = "";
+// Sign-ups: get a free access key at web3forms.com (enter chad@dmcompanion.com, the key arrives by email)
+// and paste it below. Each sign-up is emailed to you. Leave it empty and the form asks people to email you.
+const WEB3FORMS_KEY = "";
 const CONTACT_EMAIL = "chad@dmcompanion.com";
 
 document.getElementById('contact-addr').textContent = CONTACT_EMAIL;
+
+// Hero: reveal or hide a fact
+const heroFacts = document.getElementById('hero-facts');
+const heroCount = document.getElementById('hero-count');
+function updateCount(){
+  const all = heroFacts.querySelectorAll('.vis');
+  const shown = heroFacts.querySelectorAll('.vis[data-v="party"]').length;
+  heroCount.textContent = 'Players see ' + shown + ' of ' + all.length + ' facts';
+}
+heroFacts.addEventListener('click', (e) => {
+  const b = e.target.closest('button.vis'); if (!b) return;
+  const party = b.dataset.v !== 'party';
+  b.dataset.v = party ? 'party' : 'dm';
+  b.textContent = party ? 'Party knows' : 'DM only';
+  updateCount();
+});
+
+// Waitlist
 const form = document.getElementById('waitlist');
 const msg = document.getElementById('wl-msg');
 function say(text, err){ msg.textContent = text; msg.className = err ? 'msg err' : 'msg'; msg.hidden = false; }
@@ -413,13 +464,19 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = form.email.value.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Enter a valid email address.', true);
+  if (!form.would_pay_8.value) return say('Pick an answer for the $8 a month question.', true);
   if (!form.adult.checked) return say('DM Companion is for adults. Confirm you\'re 18 or older to join.', true);
-  if (!FORM_ENDPOINT) return say('Sign-ups open soon. For now, email ' + CONTACT_EMAIL + ' and we\'ll add you to the list.', false);
+  if (!WEB3FORMS_KEY) return say('Sign-ups open soon. For now, email ' + CONTACT_EMAIL + ' and we\'ll add you to the list.', false);
   const btn = document.getElementById('wl-submit');
   btn.disabled = true; btn.textContent = 'Sending…';
+  const data = new FormData(form);
+  data.append('access_key', WEB3FORMS_KEY);
+  data.append('subject', 'DM Companion early access: ' + email);
+  data.append('from_name', 'dmcompanion.com');
   try {
-    const res = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) });
-    if (!res.ok) throw new Error();
+    const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Accept': 'application/json' }, body: data });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || out.success === false) throw new Error();
     form.reset(); say('You\'re on the list. We\'ll email you when early access opens.');
   } catch {
     say('That didn\'t go through. Try again, or email ' + CONTACT_EMAIL + '.', true);
